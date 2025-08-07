@@ -55,11 +55,23 @@ Classes inherited from Base Model:
 * [user.py](/models/user.py)
 
 #### `/models/engine` directory contains File Storage class that handles JASON serialization and deserialization :
+
 [file_storage.py](/models/engine/file_storage.py) - serializes instances to a JSON file & deserializes back to instances
 * `def all(self)` - returns the dictionary __objects
 * `def new(self, obj)` - sets in __objects the obj with key <obj class name>.id
 * `def save(self)` - serializes __objects to the JSON file (path: __file_path)
 * ` def reload(self)` -  deserializes the JSON file to __objects
+* `def get(self, cls, id)` - retrieves one object from the database based on it's class and it's id
+* `def count(self, cls=None)` - return the number of objects in storage matching the given class
+
+
+[db_storage.py](/models/engine/db_storage.py) - serializes instances to a JSON file & deserializes back to instances
+* `def all(self)` - returns the dictionary __objects
+* `def new(self, obj)` - sets in __objects the obj with key <obj class name>.id
+* `def save(self)` - serializes __objects to the JSON file (path: __file_path)
+* ` def reload(self)` -  deserializes the JSON file to __objects
+* `def get(self, cls, id)` - retrieves one object from the database based on it's class and it's id
+* `def count(self, cls=None)` - return the number of objects in storage matching the given class
 
 #### `/tests` directory contains all unit test cases for this project:
 [/test_models/test_base_model.py](/tests/test_models/test_base_model.py) - Contains the TestBaseModel and TestBaseModelDocs classes
