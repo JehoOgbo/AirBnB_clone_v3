@@ -9,10 +9,12 @@ app = Flask(__name__)
 app.url_map.strict_slashes = False
 app.register_blueprint(app_views)
 
+
 @app.teardown_appcontext
 def closer(code):
     """closes a storage engine"""
     storage.close()
+
 
 @app.errorhandler(404)
 def not_found(error):
@@ -26,4 +28,4 @@ if __name__ == "__main__":
         host = '0.0.0.0'
     if not port:
         port = '0.0.0.0'
-    app.run(host='0.0.0.0', port='5000', threaded=True)
+    app.run(host, port, threaded=True)
