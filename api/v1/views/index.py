@@ -15,8 +15,8 @@ def status_get():
 def get_stats():
     """returns the number of each object by type"""
     obj_list = {'amenities': 'Amenity', 'cities': 'City',
-                'places': 'Place', 'review': 'Review',
-                'state': 'State', 'users': 'User'}
+                'places': 'Place', 'reviews': 'Review',
+                'states': 'State', 'users': 'User'}
     obj_dict = {}
     for obj, obj_name in obj_list.items():
         obj_dict[obj] = storage.count(obj_name)
