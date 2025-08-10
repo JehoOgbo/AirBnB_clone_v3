@@ -48,7 +48,7 @@ def post_user():
         return make_response(jsonify({'error': 'Missing password'}), 400)
     user = User(**request.get_json())
     user.save()
-    return make_response(jsonify(user.to_dict()), 201)ld = storage.get("User", user_id)
+    return make_response(jsonify(user.to_dict()), 201)
 
 
 @app_views.route('/users/<string:user_id>', methods=['PUT'],
