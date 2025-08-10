@@ -1,0 +1,69 @@
+#!/usr/bin/python3
+"""view for amenities objects that handles all default api actions"""
+from api.v1.views import app_views
+from flask import jsonify, abort, request, make_response
+from models import storage
+from models.amenities import amenities
+
+
+@app_views.route('/amenities', methods=['GET'])
+def amenities_list():
+    """retrieves a list of all amenities objects"""
+    amenities_list = storage.all("amenities")
+    new_list = []
+    for amenities in amenities_list.values():
+        new_list.append(amenities.to_dict())
+    return jsonify(new_list)
+
+
+@app_views.route('/amenities/<amenities_id>', methods=['GET'])
+def single_amenities(amenities_id):
+    """retrieves a single amenities object"""
+    obj = storage.get("amenities", amenities_id)
+    if obj is None:
+        abort(404)
+    obj = obj.to_dict()
+    return jsonify(obj)
+
+
+@app_views.route('/amenities/<amenities_id>', methods=['DELETE'])
+def delete_amenities(amenities_id):
+    """deletes a amenities"""
+    obj = storage.get("amenities", amenities_id)
+    if obj is None:
+        abort(404)
+    storage.delete(obj)
+    storage.save()
+    return jsonify({})
+
+
+@app_views.route('/amenities', methods=['POST'])
+def create_amenities():
+    """creates a new amenities object"""
+    try:
+        data = request.get_json()
+    except Exception:
+        return make_response(jsonify({'error': 'Not a JSON'}), 400)
+    if 'name' not in data.keys():
+        return make_response(jsonify({'error': 'Missing name'}), 400)
+    new_amenities = amenities(**data)
+    new_amenities.save()
+    return make_response(jsonify(new_amenities.to_dict()), 201)
+
+
+@app_views.route('/amenities/<amenities_id>', methods=['PUT'])
+def update_amenities(amenities_id):
+    """update the information inside a amenities object"""
+    try:
+        data = request.get_json()
+    except Exception:
+        return make_response(jsonify({'error': 'Not a JSON'}), 400)
+    old = storage.get("amenities", amenities_id)
+    if old is None:
+        abort(404)
+    for key, value in data.items():
+        if key not in ["id", "created_at", "updated_at"]:
+            setattr(old, key, value)
+    old.save()
+    new = storage.get("amenities", amenities_id)
+    return make_response(jsonify(new.to_dict()), 200)
