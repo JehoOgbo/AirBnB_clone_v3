@@ -65,5 +65,4 @@ def update_state(state_id):
         if key not in ["id", "created_at", "updated_at"]:
             setattr(old, key, value)
     old.save()
-    new = storage.get("State", state_id)
-    return make_response(jsonify(new.to_dict()), 200)
+    return make_response(jsonify(old.to_dict()), 200)
