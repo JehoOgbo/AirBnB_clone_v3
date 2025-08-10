@@ -38,7 +38,7 @@ def delete_user(user_id):
 
 
 @app_views.route('/users', methods=['POST'])
-def create_user(user_id):
+def create_user():
     """creates a new user"""
     try:
         data = request.get_json()
