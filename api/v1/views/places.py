@@ -9,6 +9,8 @@ from models.place import Place
 @app_views.route('/cities/<city_id>/places', methods=['GET'])
 def place_list(city_id):
     """retrieves a list of all place objects linked with a city"""
+    if storage.get("City", city_id) is None:
+        abort(404)
     place_list = storage.all("Place")
     cities_place = []
     for place in place_list.values():
@@ -52,8 +54,8 @@ def post_place(city_id):
         return make_response(jsonify({'error': 'Not a JSON'}), 400)
     if 'user_id' not in request.get_json():
         return make_response(jsonify({'error': 'Missing user_id'}), 400)
-    user_id = storage.get("User", user_id)
-    if user_id is None:
+    user_id = request.get_json()['user_id']
+    if storage.get("User", user_id) is None:
         abort(404)
     if 'name' not in request.get_json():
         return make_response(jsonify({'error': 'Missing name'}), 400)
