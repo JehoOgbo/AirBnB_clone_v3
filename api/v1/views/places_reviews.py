@@ -44,7 +44,7 @@ def delete_review(review_id):
                  strict_slashes=False)
 def post_review(place_id):
     """create a new review"""
-    place = storage.get("Place", city_id)
+    place = storage.get("Place", place_id)
     if place is None:
         abort(404)
     if not request.get_json():
