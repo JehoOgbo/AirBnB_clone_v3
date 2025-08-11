@@ -75,6 +75,6 @@ def put_review(review_id):
     for attr, val in request.get_json().items():
         if attr not in ['id', 'user_id', 'city_id',
                         'created_at', 'updated_at']:
-            setattr(place, attr, val)
+            setattr(review, attr, val)
     review.save()
     return jsonify(review.to_dict())
