@@ -76,5 +76,5 @@ def put_review(review_id):
         if attr not in ['id', 'user_id', 'city_id',
                         'created_at', 'updated_at']:
             setattr(place, attr, val)
-    place.save()
-    return jsonify(place.to_dict())
+    review.save()
+    return jsonify(review.to_dict())
