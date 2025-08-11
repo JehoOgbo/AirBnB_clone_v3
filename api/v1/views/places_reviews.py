@@ -6,20 +6,17 @@ from models import storage
 from models.review import Review
 
 
-@app_views.route('/places/<place_id>/reviews', methods=['GET'])
-def review_list(place_id):
-    """retrieves a list of all review objects linked with a place"""
-    if storage.get("Place", place_id) is None:
+@app_views.route('/places/<string:place_id>/reviews', methods=['GET'],
+                 strict_slashes=False)
+def get_reviews(place_id):
+    """get reviews for a specified place"""
+    place = storage.get("Place", place_id)
+    if place is None:
         abort(404)
-    review_list = storage.all("Review")
-    place_review = []
-    for review in review_list.values():
-        if review.place_id == place_id:
-            place_review.append(review)
-    new_list = []
-    for reviews in place_review:
-        new_list.append(reviews.to_dict())
-    return jsonify(new_list)
+    reviews = []
+    for review in place.reviews:
+        reviews.append(review.to_dict())
+    return jsonify(reviews)
 
 
 @app_views.route('/reviews/<review_id>', methods=['GET'])
